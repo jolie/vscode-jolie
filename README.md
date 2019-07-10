@@ -18,6 +18,8 @@ Support for the [Jolie programming language](https://jolie-lang.org) inside of V
 
 - [Jolie](https://jolie-lang.org) 1.8.1 or above.
 
+> This Jolie version is only available through git for now. A new release will appear in the next few weeks.
+
 ## Extension Settings
 
 None for now.
