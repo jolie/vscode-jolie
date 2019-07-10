@@ -9,7 +9,7 @@ include "../interfaces/lsp.iol"
 /*
  * Service that handles all the textDocument/ messages sent from the client
  */
-execution{ concurrent }
+execution { concurrent }
 
 constants {
   INTEGER_MAX_VALUE = 2147483647,
