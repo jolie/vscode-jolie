@@ -34,3 +34,8 @@ None for now.
 ### 0.9.3
 
 First release.
+
+### 0.9.4
+
+- Detection of the necessary Jolie version.
+- Notify the user if the Jolie executable cannot be found.

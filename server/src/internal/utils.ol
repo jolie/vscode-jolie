@@ -29,6 +29,16 @@ outputPort Client {
   Interfaces: ServerToClient
 }
 
+// interface InspectionUtilsIface {
+// RequestResponse:
+//   inspect
+// }
+
+// service InspectionUtils {
+// interfaces: InspectionUtilsIface
+// }
+
+// TODO: refactor this definition to an internal service
 define inspect
 {
   scope( inspection ) {
@@ -114,6 +124,7 @@ define inspect
   }
 }
 
+// TODO: refactor this definition to an internal service
 define sendDiagnostics {
   if ( saveProgram ) {
     doc.jolieProgram << inspectionRes

@@ -1,12 +1,36 @@
 import * as path from 'path'
 import * as net from 'net'
-import { workspace, ExtensionContext } from 'vscode'
+import { window, workspace, ExtensionContext } from 'vscode'
 import * as cp from 'child_process'
 import { LanguageClient, LanguageClientOptions, StreamInfo } from 'vscode-languageclient'
+import * as semver from 'semver'
+import * as execa from 'execa'
 
 let client: LanguageClient
 
-export function activate(context: ExtensionContext) {
+const versionRequirement = ">=1.8.1"
+
+async function checkRequiredJolieVersion():Promise<void> {
+	try {
+		const p = await execa('jolie', ['--version'])
+		const stderr = p.stderr
+		const result = stderr.match(/Jolie\s+(\d\.\d\.\d).+/)
+		if (result.length > 1) {
+			const jolieVersion = result[1]
+			if( !semver.satisfies(jolieVersion, versionRequirement) ) {
+				window.showErrorMessage(`This extension requires Jolie version ${versionRequirement}, whereas your version is ${jolieVersion}. Some features may not work correctly. Please consider updating your Jolie installation.`)
+			}
+		} else {
+			window.showErrorMessage(`Could not detect the version of the Jolie interpreter. Output of \"jolie --version\": ${stderr}`)
+		}
+	} catch(err) {
+		window.showErrorMessage('Could not start the Jolie interpreter. Please check that the jolie executable is installed.')
+	}
+}
+
+export async function activate(context: ExtensionContext) {
+	await checkRequiredJolieVersion()
+
 	console.log("Activating Jolie Language Server")
 	
 	const serverOptions = () => new Promise<StreamInfo>( (resolve, reject) => {
