@@ -27,7 +27,7 @@ None for now.
 ## Known Issues
 
 - The Jolie Language Server tcp port is statically fixed as 9123. This should be a configurable setting at least.
-- Requires the environment variable `JOLIE_PATH` to be set correctly.
+- Requires the environment variable `JOLIE_HOME` to be set correctly.
 
 ## Release Notes
 
