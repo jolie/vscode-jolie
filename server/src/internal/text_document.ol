@@ -26,11 +26,6 @@ inputPort TextDocumentInput {
   Interfaces: TextDocumentInterface
 }
 
-outputPort SyntaxChecker {
-  location: "local://SyntaxChecker"
-  Interfaces: SyntaxCheckerInterface
-}
-
 outputPort Utils {
   location: "local://Utils"
   Interfaces: UtilsInterface
