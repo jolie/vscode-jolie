@@ -1,0 +1,69 @@
+{
+    "name": "vscode-jolie",
+    "displayName": "jolie.vscode-jolie",
+    "description": "Language support for the Jolie programming language (https://jolie-lang.org)",
+    "version": "0.9.0",
+    "license": "MIT",
+    "author": {
+        "name": "Fabrizio Montesi",
+        "email": "famontesi@gmail.com",
+        "url": "https://fabriziomontesi.com"
+    },
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/jolie/vscode-jolie"
+    },
+    "publisher": "jolie",
+    "engines": {
+        "vscode": "^1.36.0"
+    },
+    "categories": [
+        "Programming Languages"
+    ],
+    "contributes": {
+        "languages": [
+            {
+                "id": "jolie",
+                "aliases": [
+                    "Jolie",
+                    "jolie"
+                ],
+                "extensions": [
+                    ".ol",
+                    ".iol"
+                ],
+                "configuration": "./language-configuration.json"
+            }
+        ],
+        "grammars": [
+            {
+                "language": "jolie",
+                "scopeName": "source.jolie",
+                "path": "./syntaxes/jolie.tmLanguage.json"
+            }
+        ]
+    },
+    "main": "./out/extension",
+    "activationEvents": [
+        "onLanguage:jolie"
+    ],
+    "scripts": {
+        "vscode:prepublish": "npm run update-vscode && npm run compile",
+        "compile": "tsc -b",
+        "watch": "tsc -b -w",
+        "update-vscode": "vscode-install",
+        "postinstall": "vscode-install"
+    },
+    "dependencies": {
+        "execa": "^1.0.0",
+        "vscode-languageclient": "^5.2.1"
+    },
+    "devDependencies": {
+        "@types/execa": "^0.9.0",
+        "@types/mocha": "^5.2.0",
+        "@types/node": "^8.10.50",
+        "tslint": "^5.16.0",
+        "typescript": "^3.5.1",
+        "vscode": "^1.1.35"
+    }
+}
