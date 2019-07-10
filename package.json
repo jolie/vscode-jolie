@@ -56,7 +56,6 @@
         "postinstall": "vscode-install"
     },
     "dependencies": {
-        "execa": "^1.0.0",
         "vscode-languageclient": "^5.2.1"
     },
     "devDependencies": {
