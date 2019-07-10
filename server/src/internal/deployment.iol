@@ -17,7 +17,6 @@ outputPort Workspace {
 embedded {
   Jolie: "internal/text_document.ol" in TextDocument,
          "internal/workspace.ol" in Workspace,
-         "internal/syntax_checker.ol",
          "internal/utils.ol"
 }
 

@@ -40,11 +40,6 @@ interface ServerToClient {
     publishDiagnostics( PublishDiagnosticParams )
 }
 
-interface SyntaxCheckerInterface {
-  OneWay:
-    syntaxCheck
-}
-
 interface UtilsInterface {
   RequestResponse:
     getDocument( string )( TextDocument )
