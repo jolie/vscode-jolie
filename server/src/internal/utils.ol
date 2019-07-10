@@ -162,6 +162,7 @@ main {
         version = version
       }
 
+      // TODO: use a dictionary with URIs as keys instead of an array
       global.textDocument[#global.textDocument] << doc
   }
 
