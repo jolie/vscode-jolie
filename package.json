@@ -4,6 +4,7 @@
     "description": "Language support for the Jolie programming language (https://jolie-lang.org)",
     "version": "0.9.1",
     "license": "MIT",
+    "icon": "images/icon.png",
     "author": {
         "name": "Fabrizio Montesi",
         "email": "famontesi@gmail.com",

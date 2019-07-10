@@ -29,6 +29,6 @@ None for now.
 
 ## Release Notes
 
-### 1.0.0
+### 0.9.2
 
 First release.
