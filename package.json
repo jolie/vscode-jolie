@@ -29,7 +29,8 @@
 		],
 		"keybindings": [
 			{
-				"key": "cmd+r",
+				"key": "ctrl+alt+n",
+				"macos": "cmd+alt+n",
 				"command": "workbench.action.tasks.runTask",
 				"args": "run"
 			}

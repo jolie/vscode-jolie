@@ -10,7 +10,7 @@ let client: LanguageClient
 
 const versionRequirement = ">=1.8.1"
 
-function createTask( title: string ): Task {
+function createRunTask( title: string ): Task {
 	let file = window.activeTextEditor.document.fileName;
 	let dir = path.dirname( file )
 	return new Task( 
@@ -40,17 +40,21 @@ async function checkRequiredJolieVersion():Promise<void> {
 	}
 }
 
-export async function activate(context: ExtensionContext) {
-	await checkRequiredJolieVersion()
-
+function registerTasks() {
 	tasks.registerTaskProvider( "run", {
 		provideTasks: () => {
-			return [ createTask( "Run current Jolie program" ) ];
+			return [ createRunTask( "Run current Jolie program" ) ];
 		},
 		resolveTask( task : Task ): Task | undefined {
 			return task
 		}
 	})
+}
+
+export async function activate(context: ExtensionContext) {
+	await checkRequiredJolieVersion()
+
+	registerTasks()
 
 	console.log("Activating Jolie Language Server")
 	
