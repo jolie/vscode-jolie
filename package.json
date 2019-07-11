@@ -2,7 +2,7 @@
 	"name": "vscode-jolie",
 	"displayName": "Jolie Language Support",
 	"description": "Language support for the Jolie programming language (https://jolie-lang.org)",
-	"version": "1.0.0",
+	"version": "1.1.0",
 	"license": "MIT",
 	"icon": "images/icon.png",
 	"author": {
@@ -30,13 +30,13 @@
 		"keybindings": [
 			{
 				"key": "ctrl+alt+n",
-				"when" : "!isMac",
+				"when": "!isMac",
 				"command": "workbench.action.tasks.runTask",
 				"args": "run"
 			},
 			{
 				"key": "cmd+alt+n",
-				"when" : "isMac",
+				"when": "isMac",
 				"command": "workbench.action.tasks.runTask",
 				"args": "run"
 			}
