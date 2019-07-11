@@ -55,7 +55,23 @@
 				"scopeName": "source.jolie",
 				"path": "./syntaxes/jolie.tmLanguage.json"
 			}
-		]
+		],
+		"configuration": {
+			"type": "object",
+			"title": "Jolie LSP Client Configuration",
+			"properties": {
+				"jolie.showDebugMessages": {
+					"type": "boolean",
+					"description": "Select set to true to show debugging messages in the Extensions Output Panel",
+					"default": "false"
+				},
+				"jolie.serverPort": {
+					"type": "number",
+					"description": "The TCP port where the Jolie LSP Server will be listening on",
+					"default": 9123
+				}
+			}
+		}
 	},
 	"main": "./out/extension",
 	"activationEvents": [
@@ -81,5 +97,10 @@
 		"tslint": "^5.16.0",
 		"typescript": "^3.5.1",
 		"vscode": "^1.1.35"
+	},
+	"__metadata": {
+		"id": "d0a46642-0d01-489c-9e79-8ac5e26f6836",
+		"publisherDisplayName": "Jolie programming language",
+		"publisherId": "b3d0d12e-52fa-4b91-a205-826051eed892"
 	}
 }

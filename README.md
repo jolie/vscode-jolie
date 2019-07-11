@@ -24,16 +24,23 @@ None for now.
 
 ## Known Issues
 
-- The Jolie Language Server tcp port is statically fixed as 9123. This should be a configurable setting at least.
 - Requires the environment variable `JOLIE_HOME` to be set correctly.
 
 ## Release Notes
 
-### 0.9.3
+### 1.1.0
 
-First release.
+- Created extensions configuration parameters:
+  - `Server Port`: the TCP port of the Jolie LSP Server. Default is `9123`.
+  - `Show Debug Messages`: if set to true, show debug information in the output channel `Jolie LSP Client`. The Output view is toggable under View -> Output. The channel selection is via the dropdown menu on the left.
+- When the Jolie LSP Server process is closed when also the client closes.
+- Error message in case the Jolie LSP Server cannot start properly (includes information on how to solve the problem via extension configurations).
 
 ### 1.0.0
 
 - Detection of the necessary Jolie version.
 - Notify the user if the Jolie executable cannot be found.
+
+### 0.9.3
+
+First release.
