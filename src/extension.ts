@@ -124,12 +124,13 @@ export async function activate(context: ExtensionContext) {
 	client.start()
 }
 
-export function deactivate(): Thenable<void> | undefined {
-	if( proc ){
-		proc.kill( 'SIGINT' )
-	}
+export async function deactivate(): Promise<void> | undefined {
 	if ( !client ) {
 		return undefined	
 	}
-	return client.stop()
+	return client.stop().then( function(){
+		if( proc ){
+			proc.kill( 'SIGINT' )
+		}
+	})
 }
