@@ -58,7 +58,7 @@ function registerTasks() {
 }
 
 function log( message: string ) {
-	if( getConfigValue( 'jolie.showDebugMessages' ) ){
+	if( getConfigValue( 'jolie.languageServer.showDebugMessages' ) ){
 		logger.appendLine( message )
 	}
 }
@@ -68,7 +68,7 @@ export async function activate(context: ExtensionContext) {
 	registerTasks()
 	
 	logger = window.createOutputChannel( 'Jolie LSP Client' )
-	const serverPort: number = getConfigValue( 'jolie.serverPort' )
+	const serverPort: number = getConfigValue( 'jolie.languageServer.tcpPort' )
 
 	log( "Activating Jolie Language Server" )
 	
@@ -93,16 +93,17 @@ export async function activate(context: ExtensionContext) {
 			log(`Jolie says: ${message}`)
 		})
 		proc.stderr.on('data', (out) => {
-			if( String( out ).includes( "service initialisation failed" ) ){
-				window.showErrorMessage( String( out ) )
+			let s = String( out )
+			if( s.includes( "service initialisation failed" ) ){
+				window.showErrorMessage( s )
 			}
-			if( String( out ).includes( "Address already in use" ) ){
-				window.showErrorMessage( String( out ) )
-				window.showInformationMessage( "Please check that port: " + tcpPort + " of the local machine is free. " + 
-				"Alternatively, you can change the port number under the Jolie Language Support extension configuration; " +
-				"After the change, remembers to reboot your editor." )
+			if( s.includes( "Address already in use" ) ){
+				window.showErrorMessage( s )
+				window.showInformationMessage( "Please check that the TCP port " + tcpPort + " of the local machine is free. " + 
+				"Alternatively, you can change the TCP port number under the Jolie Language Support extension configuration. " +
+				"After the change, remember to reboot your editor." )
 			}
-			log( String( out ) )
+			log( s )
 		})
 	})
 
@@ -126,11 +127,14 @@ export async function activate(context: ExtensionContext) {
 
 export async function deactivate(): Promise<void> | undefined {
 	if ( !client ) {
-		return undefined	
-	}
-	return client.stop().then( function(){
-		if( proc ){
+		if ( proc ) {
 			proc.kill( 'SIGINT' )
 		}
-	})
+		return undefined	
+	}
+	return client.stop().then( () => {
+		if ( proc ) {
+			proc.kill( 'SIGINT' )
+		}
+	} )
 }

@@ -64,16 +64,16 @@
 		],
 		"configuration": {
 			"type": "object",
-			"title": "Jolie LSP Client Configuration",
+			"title": "Jolie",
 			"properties": {
-				"jolie.showDebugMessages": {
+				"jolie.languageServer.showDebugMessages": {
 					"type": "boolean",
-					"description": "Select set to true to show debugging messages in the Extensions Output Panel",
+					"description": "Show debug messages from the Jolie Language Server in the Extensions Output Panel",
 					"default": "false"
 				},
-				"jolie.serverPort": {
+				"jolie.languageServer.tcpPort": {
 					"type": "number",
-					"description": "The TCP port where the Jolie LSP Server will be listening on",
+					"description": "The TCP port used by the Jolie Language Server",
 					"default": 9123
 				}
 			}
