@@ -97,10 +97,5 @@
 		"tslint": "^5.16.0",
 		"typescript": "^3.5.1",
 		"vscode": "^1.1.35"
-	},
-	"__metadata": {
-		"id": "d0a46642-0d01-489c-9e79-8ac5e26f6836",
-		"publisherDisplayName": "Jolie programming language",
-		"publisherId": "b3d0d12e-52fa-4b91-a205-826051eed892"
 	}
 }

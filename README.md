@@ -33,7 +33,7 @@ None for now.
 - Created extensions configuration parameters:
   - `Server Port`: the TCP port of the Jolie LSP Server. Default is `9123`.
   - `Show Debug Messages`: if set to true, show debug information in the output channel `Jolie LSP Client`. The Output view is toggable under View -> Output. The channel selection is via the dropdown menu on the left.
-- When the Jolie LSP Server process is closed when also the client closes.
+- The Jolie LSP Server process is closed when also the client closes.
 - Error message in case the Jolie LSP Server cannot start properly (includes information on how to solve the problem via extension configurations).
 
 ### 1.0.0
