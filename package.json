@@ -22,6 +22,18 @@
         "Programming Languages"
     ],
     "contributes": {
+        "taskDefinitions": [
+            {
+                "type": "run"
+            }
+        ],
+        "keybindings" : [
+            {
+                "key" : "cmd+r",
+                "command": "workbench.action.tasks.runTask",
+                "args": "run"
+            }
+        ],
         "languages": [
             {
                 "id": "jolie",
