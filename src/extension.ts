@@ -1,6 +1,6 @@
 import * as path from 'path'
 import * as net from 'net'
-import { window, workspace, ExtensionContext } from 'vscode'
+import { window, workspace, ExtensionContext, Task, tasks, ShellExecution } from 'vscode'
 import * as cp from 'child_process'
 import { LanguageClient, LanguageClientOptions, StreamInfo } from 'vscode-languageclient'
 import * as semver from 'semver'
@@ -9,6 +9,18 @@ import * as execa from 'execa'
 let client: LanguageClient
 
 const versionRequirement = ">=1.8.1"
+
+function createTask( title: string ): Task {
+	let file = window.activeTextEditor.document.fileName;
+	let dir = path.dirname( file )
+	return new Task( 
+		{ type: "run", task: "runJolie" }, 
+		title,
+		"Jolie", 
+		new ShellExecution( "jolie " + file + " && echo ''", { cwd : dir } ), 
+		[] 
+	)
+}
 
 async function checkRequiredJolieVersion():Promise<void> {
 	try {
@@ -30,6 +42,15 @@ async function checkRequiredJolieVersion():Promise<void> {
 
 export async function activate(context: ExtensionContext) {
 	await checkRequiredJolieVersion()
+
+	tasks.registerTaskProvider( "run", {
+		provideTasks: () => {
+			return [ createTask( "Run current Jolie program" ) ];
+		},
+		resolveTask( task : Task ): Task | undefined {
+			return task
+		}
+	})
 
 	console.log("Activating Jolie Language Server")
 	
