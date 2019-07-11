@@ -30,7 +30,13 @@
 		"keybindings": [
 			{
 				"key": "ctrl+alt+n",
-				"macos": "cmd+alt+n",
+				"when" : "!isMac",
+				"command": "workbench.action.tasks.runTask",
+				"args": "run"
+			},
+			{
+				"key": "cmd+alt+n",
+				"when" : "isMac",
 				"command": "workbench.action.tasks.runTask",
 				"args": "run"
 			}
@@ -55,7 +61,23 @@
 				"scopeName": "source.jolie",
 				"path": "./syntaxes/jolie.tmLanguage.json"
 			}
-		]
+		],
+		"configuration": {
+			"type": "object",
+			"title": "Jolie LSP Client Configuration",
+			"properties": {
+				"jolie.showDebugMessages": {
+					"type": "boolean",
+					"description": "Select set to true to show debugging messages in the Extensions Output Panel",
+					"default": "false"
+				},
+				"jolie.serverPort": {
+					"type": "number",
+					"description": "The TCP port where the Jolie LSP Server will be listening on",
+					"default": 9123
+				}
+			}
+		}
 	},
 	"main": "./out/extension",
 	"activationEvents": [
