@@ -23,7 +23,7 @@ embedded {
 inputPort Input {
   //Location: "socket://localhost:8080"
   Location: Location_JolieLS
-  Protocol: jsonrpc { //.debug = true
+  Protocol: jsonrpc { .debug = true
     clientLocation -> global.clientLocation
     clientOutputPort = "Client"
     transport = "lsp"

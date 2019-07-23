@@ -39,6 +39,10 @@ init {
 main {
 
   [ didOpen( notification ) ]  {
+      replaceRequest = notification.textDocument.uri ;
+      replaceRequest.regex= "([%]3A)";
+      replaceRequest.replacement= ":";
+      replaceAll@StringUtils( replaceRequest )( notification.textDocument.uri );
       println@Console( "didOpen received for " + notification.textDocument.uri )()
       insertNewDocument@Utils( notification )
       doc.path = notification.textDocument.uri

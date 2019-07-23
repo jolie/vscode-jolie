@@ -30,13 +30,13 @@
 		"keybindings": [
 			{
 				"key": "ctrl+alt+n",
-				"when" : "!isMac",
+				"when": "!isMac",
 				"command": "workbench.action.tasks.runTask",
 				"args": "run"
 			},
 			{
 				"key": "cmd+alt+n",
-				"when" : "isMac",
+				"when": "isMac",
 				"command": "workbench.action.tasks.runTask",
 				"args": "run"
 			}
