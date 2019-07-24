@@ -58,6 +58,10 @@ main {
    */
   [ didChange( notification ) ] {
       println@Console( "didChange received " )()
+      replaceRequest = notification.textDocument.uri ;
+      replaceRequest.regex= "([%]3A)";
+      replaceRequest.replacement= ":";
+      replaceAll@StringUtils( replaceRequest )( notification.textDocument.uri );
 
       docModifications << {
         text = notification.contentChanges[0].text
@@ -83,6 +87,10 @@ main {
       //not the text! Therefore I get the document saved in the memory to get the text
       //the text found will match the actual text just saved in the file as
       //before this we surely received a didChange with the updated text
+      replaceRequest = notification.textDocument.uri ;
+      replaceRequest.regex= "([%]3A)";
+      replaceRequest.replacement= ":";
+      replaceAll@StringUtils( replaceRequest )( notification.textDocument.uri );
       getDocument@Utils( notification.textDocument.uri )( textDocument )
       docModifications << {
         text = textDocument.source
@@ -112,6 +120,10 @@ main {
    */
   [ completion( completionParams )( completionRes ) {
       println@Console( "Completion Req Received" )()
+      replaceRequest = completionParams.textDocument.uri ;
+      replaceRequest.regex= "([%]3A)";
+      replaceRequest.replacement= ":";
+      replaceAll@StringUtils( replaceRequest )( completionParams.textDocument.uri );
       completionRes.isIncomplete = false
       txtDocUri -> completionParams.textDocument.uri
       position -> completionParams.position
@@ -198,6 +210,10 @@ main {
   [ hover( hoverReq )( hoverResp ) {
     found = false
     println@Console( "hover req received.." )()
+    replaceRequest = hoverReq.textDocument.uri ;
+    replaceRequest.regex= "([%]3A)";
+    replaceRequest.replacement= ":";
+    replaceAll@StringUtils( replaceRequest )( hoverReq.textDocument.uri );
     textDocUri -> hoverReq.textDocument.uri
     getDocument@Utils( textDocUri )( document )
 
@@ -305,6 +321,10 @@ main {
   [ signatureHelp( txtDocPositionParams )( signatureHelp ) {
       // TODO, not finished, buggy, needs refactor
       println@Console( "signatureHelp Message Received" )(  )
+      replaceRequest = txtDocPositionParams.textDocument.uri ;
+      replaceRequest.regex= "([%]3A)";
+      replaceRequest.replacement= ":";
+      replaceAll@StringUtils( replaceRequest )( txtDocPositionParams.textDocument.uri );
       signatureHelp = void
       textDocUri -> txtDocPositionParams.textDocument.uri
       position -> txtDocPositionParams.position

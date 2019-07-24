@@ -60,14 +60,24 @@ define inspect
                 if ( !(matchRes.group[1] instanceof string) ) {
                   matchRes.group[1] = ""
                 }
-                indexOf@StringUtils( matchRes.group[1] {
-                  word = "file:"
-                } )( indexOfRes )
-                if ( indexOfRes > -1 ) {
-                  subStrReq = matchRes.group[1]
-                  subStrReq.begin = indexOfRes + 5
-                  // length@StringUtils( matchRes.group[1] )( subStrReq.end )
-                  substring@StringUtils( subStrReq )( documentUri ) //line
+                split@StringUtils( matchRes.group[1] {
+                  regex = "(file:)"
+                } )( splitRes )
+
+
+                if ( #splitRes.result > 0 ) {
+                  documentUri = splitRes.result[#splitRes.result -1 ]
+                 indexOf@StringUtils(documentUri{
+                    word = ":"
+                  })(responseIndexOf)
+                  if (responseIndexOf < 0 ){
+                    documentUri= "file:"+ documentUri //if unix path
+                  }else{
+                   /* replaceFirst@StringUtils(documentUri{regex = "/"
+                     replacement ="" })(documentUri)*/
+                     documentUri = "file://" + documentUri
+
+                  }
                 }
                 
                 //line
@@ -81,9 +91,11 @@ define inspect
                 } else {
                   s = 1
                 }
-
+                
                 diagnosticParams << {
-                  uri = "file:" + documentUri
+
+
+                  uri = documentUri
                   diagnostics << {
                     range << {
                       start << {

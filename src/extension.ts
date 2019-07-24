@@ -75,11 +75,12 @@ export async function activate(context: ExtensionContext) {
 	const serverOptions = () => new Promise<StreamInfo>((resolve, reject) => {
 		const os = require("os")
 		const serverPath = context.asAbsolutePath(path.join('server', 'src'))
+		log("serverpath " + serverPath)
 		const tcpPort = serverPort
 		if (os.type() != "Windows_NT") {
 			const command = 'jolie'
 			const olFile = 'main.ol'
-			const args = ['-', `Location_JolieLS=\"socket://localhost:${tcpPort}\"`,'--trace',  olFile]
+			const args = ['-', `Location_JolieLS=\"socket://localhost:${tcpPort}\"`,  olFile]
 			// const args = ['-C', `Location_JolieLS=\"socket://localhost:${tcpPort}\"`, '-C', 'Debug=true', olFile]
 			// const args = ['-C', `Location_JolieLS=\"socket://localhost:${tcpPort}\"`, '--trace', olFile]
 			log(`starting "${command} ${args.join(' ')}"`)
@@ -110,7 +111,7 @@ export async function activate(context: ExtensionContext) {
 			const tcpPort = serverPort
 			const command = 'cmd.exe'
 			const olFile = serverPath + '\\' + 'main.ol'
-			const args = ['/K', 'jolie.bat', '-C', `Location_JolieLS=\"socket://localhost:${tcpPort}\"` ,'--trace', olFile]
+			const args = ['/K', 'jolie.bat', '-C', `Location_JolieLS=\"socket://localhost:${tcpPort}\"` , '--trace',olFile]
 			// const args = ['-C', `Location_JolieLS=\"socket://localhost:${tcpPort}\"`, '-C', 'Debug=true', olFile]
 			// const args = ['-C', `Location_JolieLS=\"socket://localhost:${tcpPort}\"`, '--trace', olFile]
 			log(`starting "${command} ${args.join(' ')}"`)
