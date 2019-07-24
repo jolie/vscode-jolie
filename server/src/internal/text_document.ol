@@ -43,6 +43,9 @@ main {
       replaceRequest.regex= "([%]3A)";
       replaceRequest.replacement= ":";
       replaceAll@StringUtils( replaceRequest )( notification.textDocument.uri );
+
+      //notification.textDocument.uri = "C:/GitHub/db_connector/db_manager/client/createDbService.ol";
+     
       println@Console( "didOpen received for " + notification.textDocument.uri )()
       insertNewDocument@Utils( notification )
       doc.path = notification.textDocument.uri

@@ -21,7 +21,7 @@ embedded {
 }
 
 inputPort Input {
-  //Location: "socket://localhost:8080"
+  //Location: "socket://localhost:9123"
   Location: Location_JolieLS
   Protocol: jsonrpc { .debug = true
     clientLocation -> global.clientLocation
