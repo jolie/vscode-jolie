@@ -1,10 +1,12 @@
 import * as path from 'path'
 import * as net from 'net'
-import { window, workspace, ExtensionContext, Task, tasks, ShellExecution, OutputChannel } from 'vscode'
+import { window, workspace, ExtensionContext, Task, tasks, ShellExecution, OutputChannel , Uri } from 'vscode'
 import * as cp from 'child_process'
 import { LanguageClient, LanguageClientOptions, StreamInfo } from 'vscode-languageclient'
 import * as semver from 'semver'
 import * as execa from 'execa'
+import * as url from 'url'
+
 
 let client: LanguageClient
 let proc: cp.ChildProcess
@@ -111,7 +113,7 @@ export async function activate(context: ExtensionContext) {
 			const tcpPort = serverPort
 			const command = 'cmd.exe'
 			const olFile = serverPath + '\\' + 'main.ol'
-			const args = ['/K', 'jolie.bat', '-C', `Location_JolieLS=\"socket://localhost:${tcpPort}\"` , '--trace',olFile]
+			const args = ['/K', 'jolie.bat', '-C', `Location_JolieLS=\"socket://localhost:${tcpPort}\"` ,olFile]
 			// const args = ['-C', `Location_JolieLS=\"socket://localhost:${tcpPort}\"`, '-C', 'Debug=true', olFile]
 			// const args = ['-C', `Location_JolieLS=\"socket://localhost:${tcpPort}\"`, '--trace', olFile]
 			log(`starting "${command} ${args.join(' ')}"`)
@@ -143,6 +145,12 @@ export async function activate(context: ExtensionContext) {
 
 	const clientOptions: LanguageClientOptions = {
 		documentSelector: [{ scheme: 'file', language: 'jolie' }, { scheme: 'untitled', language: 'jolie' }],
+		uriConverters: {
+            // VS Code by default %-encodes even the colon after the drive letter
+            // NodeJS handles it much better
+            code2Protocol: uri => url.format(url.parse(uri.toString(true))),
+            protocol2Code: str => Uri.parse(str),
+        },
 		synchronize: {
 			// configurationSection: 'jolie',
 			fileEvents: workspace.createFileSystemWatcher('**/*.{ol,iol}')
