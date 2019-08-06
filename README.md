@@ -16,6 +16,8 @@ Requires the environment variable `JOLIE_HOME` to be set correctly.
 
 ![Hover](images/feature-hover.gif)
 
+- Run Task
+
 ## Requirements
 
 - [Jolie](https://jolie-lang.org) 1.8.1 or above.
@@ -28,6 +30,14 @@ Requires the environment variable `JOLIE_HOME` to be set correctly.
 ## Known Issues
 
 None.
+
+## Supported Operating Systems
+|            | Syntax Highlighting | Completion          | Hover               | Run Task            | 
+|------------|---------------------|---------------------|---------------------|---------------------|
+| Linux      |☑										 |☑										 |☑										 |	☑									 |
+| MacOS      |☑										 |☑										 |☑										 |	☑									 |
+| Windows    |☑										 |☐										 |☐										 |	☐									 |
+
 
 ## Release Notes
 
