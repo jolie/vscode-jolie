@@ -1,6 +1,6 @@
 import * as path from 'path'
 import * as net from 'net'
-import { window, workspace, ExtensionContext, Task, tasks, ShellExecution, OutputChannel } from 'vscode'
+import { window, workspace, ExtensionContext, Task, tasks, ShellExecution, OutputChannel, Uri } from 'vscode'
 import * as cp from 'child_process'
 import { LanguageClient, LanguageClientOptions, StreamInfo } from 'vscode-languageclient'
 import * as semver from 'semver'
@@ -11,6 +11,7 @@ let proc: cp.ChildProcess
 let logger: OutputChannel
 
 const versionRequirement = ">=1.8.1"
+const IsWindows = ( process.platform === "win32" )
 
 function getConfigValue( value: string ): any {
 	return workspace.getConfiguration().get( value )
@@ -23,8 +24,8 @@ function createRunTask( title: string ): Task {
 		{ type: "run", task: "runJolie" },
 		title,
 		"Jolie", 
-		new ShellExecution( "jolie " + file + " && echo ''", { cwd : dir } ), 
-		[] 
+		new ShellExecution( "jolie " + file, { cwd : dir } ), 
+		[]
 	)
 }
 
@@ -68,20 +69,23 @@ export async function activate(context: ExtensionContext) {
 	registerTasks()
 	
 	logger = window.createOutputChannel( 'Jolie LSP Client' )
-	const serverPort: number = getConfigValue( 'jolie.languageServer.tcpPort' )
+	const tcpPort: number = getConfigValue( 'jolie.languageServer.tcpPort' )
 
 	log( "Activating Jolie Language Server" )
 	
 	const serverOptions = () => new Promise<StreamInfo>( (resolve, reject) => {
 		const serverPath = context.asAbsolutePath(path.join('server', 'src'))
-		const tcpPort = serverPort
-		const command = 'jolie'
+		const command = IsWindows ? 'cmd.exe' : 'jolie'
 		const olFile = 'main.ol'
-		const args = ['-C', `Location_JolieLS=\"socket://localhost:${tcpPort}\"`, olFile]
+	
+		const args =
+			IsWindows ?	['/K', 'jolie.bat', '-C', `Location_JolieLS=\"socket://localhost:${tcpPort}\"`, olFile]
+			: ['-C', `Location_JolieLS=\"socket://localhost:${tcpPort}\"`, olFile]
+		
 		// const args = ['-C', `Location_JolieLS=\"socket://localhost:${tcpPort}\"`, '-C', 'Debug=true', olFile]
 		// const args = ['-C', `Location_JolieLS=\"socket://localhost:${tcpPort}\"`, '--trace', olFile]
 		log(`starting "${command} ${args.join(' ')}"`)
-		const proc = cp.spawn(command, args, { cwd: serverPath })
+		proc = cp.spawn(command, args, { cwd: serverPath })
 
 		proc.stdout.on('data', (out) => {
 			const message = String(out)
@@ -112,6 +116,12 @@ export async function activate(context: ExtensionContext) {
 		synchronize: {
 			// configurationSection: 'jolie',
 			fileEvents: workspace.createFileSystemWatcher('**/*.{ol,iol}')
+		},
+		uriConverters: {
+			// See https://github.com/Microsoft/vscode-languageserver-node/issues/105
+			code2Protocol: uri =>
+				IsWindows ? uri.toString().replace('%3A', ':') : uri.toString(),
+			protocol2Code: str => Uri.parse(str),
 		}
 	}
 

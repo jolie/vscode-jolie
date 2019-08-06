@@ -44,64 +44,64 @@ define inspect
   scope( inspection ) {
     saveProgram = true
     install( default =>
-                stderr = inspection.(inspection.default)
-                stderr.regex =  "\\s*(.+):\\s*(\\d+):\\s*(error|warning)\\s*:\\s*(.+)"
-                valueToPrettyString@StringUtils( inspection )( ciao )
-                println@Console( ciao )()
-                // println@Console( stderr )()
-                // valueToPrettyString@StringUtils( inspection )( str )
-                // println@Console( str )(  )
-                find@StringUtils( stderr )( matchRes )
-                // //getting the uri of the document to be checked
-                //have to do this because the inspector, when returning an error,
-                //returns an uri that looks the following:
-                // /home/eferos93/.atom/packages/Jolie-ide-atom/server/file:/home/eferos93/.atom/packages/Jolie-ide-atom/server/utils.ol
-                //same was with jolie --check
-                if ( !(matchRes.group[1] instanceof string) ) {
-                  matchRes.group[1] = ""
-                }
-                indexOf@StringUtils( matchRes.group[1] {
-                  word = "file:"
-                } )( indexOfRes )
-                if ( indexOfRes > -1 ) {
-                  subStrReq = matchRes.group[1]
-                  subStrReq.begin = indexOfRes + 5
-                  // length@StringUtils( matchRes.group[1] )( subStrReq.end )
-                  substring@StringUtils( subStrReq )( documentUri ) //line
-                }
-                
-                //line
-                l = int( matchRes.group[2] )
-                //severity
-                sev -> matchRes.group[3]
-                //TODO alwayes return error, never happend to get a warning
-                //but this a problem of the jolie parser
-                if ( sev == "error" ) {
-                  s = 1
-                } else {
-                  s = 1
-                }
+		stderr = inspection.(inspection.default)
+		stderr.regex =  "\\s*(.+):\\s*(\\d+):\\s*(error|warning)\\s*:\\s*(.+)"
+		valueToPrettyString@StringUtils( inspection )( ciao )
+		println@Console( ciao )()
+		// println@Console( stderr )()
+		// valueToPrettyString@StringUtils( inspection )( str )
+		// println@Console( str )(  )
+		find@StringUtils( stderr )( matchRes )
+		// //getting the uri of the document to be checked
+		//have to do this because the inspector, when returning an error,
+		//returns an uri that looks the following:
+		// /home/eferos93/.atom/packages/Jolie-ide-atom/server/file:/home/eferos93/.atom/packages/Jolie-ide-atom/server/utils.ol
+		//same was with jolie --check
+		if ( !(matchRes.group[1] instanceof string) ) {
+			matchRes.group[1] = ""
+		}
+		indexOf@StringUtils( matchRes.group[1] {
+			word = "file:"
+		} )( indexOfRes )
+		if ( indexOfRes > -1 ) {
+			subStrReq = matchRes.group[1]
+			subStrReq.begin = indexOfRes + 5
+			// length@StringUtils( matchRes.group[1] )( subStrReq.end )
+			substring@StringUtils( subStrReq )( documentUri ) //line
+		}
+		
+		//line
+		l = int( matchRes.group[2] )
+		//severity
+		sev -> matchRes.group[3]
+		//TODO alwayes return error, never happend to get a warning
+		//but this a problem of the jolie parser
+		if ( sev == "error" ) {
+			s = 1
+		} else {
+			s = 1
+		}
 
-                diagnosticParams << {
-                  uri = "file:" + documentUri
-                  diagnostics << {
-                    range << {
-                      start << {
-                        line = l-1
-                        character = 1
-                      }
-                      end << {
-                        line = l-1
-                        character = INTEGER_MAX_VALUE
-                      }
-                    }
-                    severity = s
-                    source = "jolie"
-                    message = matchRes.group[4]
-                  }
-                }
-                publishDiagnostics@Client( diagnosticParams )
-                saveProgram = false
+		diagnosticParams << {
+			uri = "file:" + documentUri
+			diagnostics << {
+			range << {
+				start << {
+				line = l-1
+				character = 1
+				}
+				end << {
+				line = l-1
+				character = INTEGER_MAX_VALUE
+				}
+			}
+			severity = s
+			source = "jolie"
+			message = matchRes.group[4]
+			}
+		}
+		publishDiagnostics@Client( diagnosticParams )
+		saveProgram = false
     )
 
     // TODO : fix these:
