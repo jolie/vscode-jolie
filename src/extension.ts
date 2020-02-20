@@ -24,7 +24,7 @@ function createRunTask( title: string ): Task {
 		{ type: "run", task: "runJolie" },
 		title,
 		"Jolie", 
-		new ShellExecution( "jolie " + file, { cwd : dir } ), 
+		new ShellExecution( `jolie "${file}"`, { cwd : dir } ), 
 		[]
 	)
 }
