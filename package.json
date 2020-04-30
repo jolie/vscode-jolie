@@ -52,7 +52,8 @@
 					".ol",
 					".iol"
 				],
-				"configuration": "./language-configuration.json"
+				"configuration": "./language-configuration.json",
+				"firstLine": "^#!/.*\\bjolie\\b"
 			}
 		],
 		"grammars": [
