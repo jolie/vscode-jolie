@@ -41,6 +41,10 @@ None.
 
 ## Release Notes
 
+### 1.3.1
+
+- Support for syntax highlighting of shebang scripts.
+
 ### 1.2.0
 
 - Improved support for Windows.
