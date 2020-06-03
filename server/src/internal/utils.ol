@@ -46,11 +46,6 @@ define inspect
     install( default =>
 		stderr = inspection.(inspection.default)
 		stderr.regex =  "\\s*(.+):\\s*(\\d+):\\s*(error|warning)\\s*:\\s*(.+)"
-		valueToPrettyString@StringUtils( inspection )( ciao )
-		println@Console( ciao )()
-		// println@Console( stderr )()
-		// valueToPrettyString@StringUtils( inspection )( str )
-		// println@Console( str )(  )
 		find@StringUtils( stderr )( matchRes )
 		// //getting the uri of the document to be checked
 		//have to do this because the inspector, when returning an error,
@@ -66,9 +61,15 @@ define inspect
 		if ( indexOfRes > -1 ) {
 			subStrReq = matchRes.group[1]
 			subStrReq.begin = indexOfRes + 5
-			// length@StringUtils( matchRes.group[1] )( subStrReq.end )
+
 			substring@StringUtils( subStrReq )( documentUri ) //line
-		}
+		}else{
+      replaceRequest = matchRes.group[1]
+      replaceRequest.regex = "\\\\";
+      replaceRequest.replacement = "/"
+      replaceAll@StringUtils( replaceRequest )( fileName )
+      documentUri = "///" + fileName
+    }
 		
 		//line
 		l = int( matchRes.group[2] )
@@ -110,12 +111,11 @@ define inspect
     getenv@Runtime( "JOLIE_HOME" )( jHome )
     getFileSeparator@File()( fs )
     getParentPath@File( uri )( documentPath )
-    // indexOf@StringUtils( documentPath { word = "file:" } )( indexOfRes )
-    // if ( indexOfRes > -1 ) {
-    //   substring@StringUtils( documentPath { begin = indexOfRes + 5 } )( documentPath )
-    // }
+    regexRequest = uri
+		regexRequest.regex =  "^(([^:/?#]+):)?(//([^/?#]*))?([^?#]*)(\\?([^#]*))?(#(.*))?"
+    find@StringUtils( regexRequest )( regexResponse ) 
     inspectionReq << {
-      filename = uri
+      filename = regexResponse.group[5]
       source = docText
       includePaths[0] = jHome + fs + "include"
       includePaths[1] = documentPath
