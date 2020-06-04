@@ -41,6 +41,10 @@ None.
 
 ## Release Notes
 
+### 1.3.2
+
+- Fix a bug in file URL recognition in Windows.
+
 ### 1.3.1
 
 - Support for syntax highlighting of shebang scripts.
