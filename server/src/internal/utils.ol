@@ -63,13 +63,13 @@ define inspect
 			subStrReq.begin = indexOfRes + 5
 
 			substring@StringUtils( subStrReq )( documentUri ) //line
-		}else{
-      replaceRequest = matchRes.group[1]
-      replaceRequest.regex = "\\\\";
-      replaceRequest.replacement = "/"
-      replaceAll@StringUtils( replaceRequest )( fileName )
-      documentUri = "///" + fileName
-    }
+		} else {
+			replaceRequest = matchRes.group[1]
+			replaceRequest.regex = "\\\\";
+			replaceRequest.replacement = "/"
+			replaceAll@StringUtils( replaceRequest )( documentUri )
+			// documentUri = "///" + fileName
+		}
 		
 		//line
 		l = int( matchRes.group[2] )
@@ -112,7 +112,7 @@ define inspect
     getFileSeparator@File()( fs )
     getParentPath@File( uri )( documentPath )
     regexRequest = uri
-		regexRequest.regex =  "^(([^:/?#]+):)?(//([^/?#]*))?([^?#]*)(\\?([^#]*))?(#(.*))?"
+	regexRequest.regex =  "^(([^:/?#]+):)?(//([^/?#]*))?([^?#]*)(\\?([^#]*))?(#(.*))?"
     find@StringUtils( regexRequest )( regexResponse ) 
     inspectionReq << {
       filename = regexResponse.group[5]
