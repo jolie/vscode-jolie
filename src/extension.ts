@@ -33,9 +33,9 @@ async function checkRequiredJolieVersion():Promise<void> {
 	try {
 		const p = await execa('jolie', ['--version'])
 		const stderr = p.stderr
-		const result = stderr.match(/Jolie\s+(\d\.\d\.\d).+/)
+		const result = stderr.match(/Jolie\s+(\d\.\d\.[^ ]*)/)
 		if (result.length > 1) {
-			const jolieVersion = result[1]
+			const jolieVersion = semver.coerce(result[1])
 			if( !semver.satisfies(jolieVersion, versionRequirement) ) {
 				window.showErrorMessage(`This extension requires Jolie version ${versionRequirement}, whereas your version is ${jolieVersion}. Some features may not work correctly. Please consider updating your Jolie installation.`)
 			}
