@@ -99,6 +99,8 @@ init {
     snippet[30].body = "cset {\n\t${1:correlationVariable}: ${2:alias}\n}"
     snippet[31] = "aggregates"
     snippet[31].body = "Aggregates: ${0:outputPortName}"
+    snippet[32] = "from"
+    snippet[32].body = "from ${0:module} import ${1:symbols}"
   }
 }
 
