@@ -91,11 +91,11 @@
 	  },
 	  "keywords_with_colon": {
 		"name": "keyword.other.with_colon.jolie",
-		"match": "\\b(location|Location|protocol|Protocol|interfaces|Interfaces|aggregates|Aggregates|redirects|Redirects|Jolie|JavaScript|Java|OneWay|RequestResponse)\\b\\s*:"
+		"match": "\\b(location|Location|protocol|Protocol|interfaces|Interfaces|aggregates|Aggregates|redirects|Redirects|Jolie|JavaScript|Java|OneWay|oneWay|RequestResponse|requestResponse)\\b\\s*:"
 	  },
 	  "keywords_other": {
 		"name": "keyword.other.jolie",
-		"match": "\\b(constants|cH|instanceof|execution|comp|concurrent|nullProcess|single|sequential|main|init|cset|is_defined|embedded|extender|courier|forward|install|undef|include|synchronized|throws|throw)\\b"
+		"match": "\\b(constants|cH|instanceof|execution|comp|concurrent|nullProcess|single|sequential|main|init|cset|is_defined|embedded|extender|courier|forward|install|undef|include|synchronized|throws|throw|from|import|as)\\b"
 	  },
 	  "keywords_control": {
 		"name": "keyword.control.jolie",
