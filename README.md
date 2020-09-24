@@ -41,6 +41,10 @@ None.
 
 ## Release Notes
 
+### 1.3.4
+
+- Add syntax highlighting for the class keyword in foreign java blocks.
+
 ### 1.3.3
 
 - Update to handle the new syntax of Jolie 1.10.
