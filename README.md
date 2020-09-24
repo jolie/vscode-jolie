@@ -41,6 +41,10 @@ None.
 
 ## Release Notes
 
+### 1.3.3
+
+- Update to handle the new syntax of Jolie 1.10.
+
 ### 1.3.2
 
 - Fix a bug in file URL recognition in Windows.
