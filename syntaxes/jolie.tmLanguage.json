@@ -95,7 +95,7 @@
 	  },
 	  "keywords_other": {
 		"name": "keyword.other.jolie",
-		"match": "\\b(constants|cH|instanceof|execution|comp|concurrent|nullProcess|single|sequential|main|init|cset|is_defined|embedded|extender|courier|forward|install|undef|include|synchronized|throws|throw|from|import|as)\\b"
+		"match": "\\b(constants|cH|instanceof|execution|comp|concurrent|nullProcess|single|sequential|main|foreign|java|init|cset|is_defined|embed|embedded|extender|courier|forward|install|undef|include|synchronized|throws|throw|from|import|as)\\b"
 	  },
 	  "keywords_control": {
 		"name": "keyword.control.jolie",
