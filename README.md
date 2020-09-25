@@ -41,6 +41,10 @@ None.
 
 ## Release Notes
 
+### 1.3.6
+
+- Support for the new execution syntax.
+
 ### 1.3.5
 
 - Support for Jolie minor versions with multiple digits.
