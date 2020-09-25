@@ -41,6 +41,10 @@ None.
 
 ## Release Notes
 
+### 1.3.5
+
+- Support for Jolie minor versions with multiple digits.
+
 ### 1.3.4
 
 - Add syntax highlighting for the class keyword in foreign java blocks.
