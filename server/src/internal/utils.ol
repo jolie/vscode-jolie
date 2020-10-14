@@ -120,6 +120,13 @@ define inspect
       includePaths[0] = jHome + fs + "include"
       includePaths[1] = documentPath
     }
+    replacementRequest = regexResponse.group[5]
+    replacementRequest.regex = "%20"
+    replacementRequest.replacement = " "
+    replaceAll@StringUtils(replacementRequest)(inspectionReq.filename)
+
+    replacementRequest = inspectionReq.includePaths[1]
+    replaceAll@StringUtils(replacementRequest)(inspectionReq.includePaths[1])
     inspectPorts@Inspector( inspectionReq )( inspectionRes )
   }
 }
