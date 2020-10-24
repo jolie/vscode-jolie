@@ -29,14 +29,120 @@ outputPort Client {
   Interfaces: ServerToClient
 }
 
-// interface InspectionUtilsIface {
-// RequestResponse:
-//   inspect
-// }
+interface InspectionUtilsIface {
+  RequestResponse:
+    inspect
+}
 
-// service InspectionUtils {
-// interfaces: InspectionUtilsIface
-// }
+service InspectionUtils {
+  Interfaces: InspectionUtilsIface
+
+  main {
+    [inspect( documentData )( inspectionResult ) {
+      scope( inspection ) {
+        inspectionResult.saveProgram = true
+        install( default =>
+          stderr = inspection.(inspection.default)
+          stderr.regex =  "\\s*(.+):\\s*(\\d+):\\s*(error|warning)\\s*:\\s*(.+)"
+          find@StringUtils( stderr )( matchRes )
+          // //getting the uri of the document to be checked
+          //have to do this because the inspector, when returning an error,
+          //returns an uri that looks the following:
+          // /home/eferos93/.atom/packages/Jolie-ide-atom/server/file:/home/eferos93/.atom/packages/Jolie-ide-atom/server/utils.ol
+          //same was with jolie --check
+          if ( !(matchRes.group[1] instanceof string) ) {
+            matchRes.group[1] = ""
+          }
+          indexOf@StringUtils( matchRes.group[1] {
+            word = "file:"
+          } )( indexOfRes )
+          if ( indexOfRes > -1 ) {
+            subStrReq = matchRes.group[1]
+            subStrReq.begin = indexOfRes + 5
+
+            substring@StringUtils( subStrReq )( documentUri ) //line
+          } else {
+            replaceRequest = matchRes.group[1]
+            replaceRequest.regex = "\\\\";
+            replaceRequest.replacement = "/"
+            replaceAll@StringUtils( replaceRequest )( documentUri )
+            // documentUri = "///" + fileName
+          }
+          
+          //line
+          l = int( matchRes.group[2] )
+          //severity
+          sev -> matchRes.group[3]
+          //TODO always return error, never happend to get a warning
+          //but this a problem of the jolie parser
+          if ( sev == "error" ) {
+            s = 1
+          } else {
+            s = 1
+          }
+
+          diagnosticParams << {
+            uri = "file:" + documentUri
+            diagnostics << {
+            range << {
+              start << {
+              line = l-1
+              character = 1
+              }
+              end << {
+              line = l-1
+              character = INTEGER_MAX_VALUE
+              }
+            }
+            severity = s
+            source = "jolie"
+            message = matchRes.group[4]
+            }
+          }
+          publishDiagnostics@Client( diagnosticParams )
+          inspectionResult.saveProgram = false
+        )
+
+        // TODO : fix these:
+        // - remove the directories of this LSP
+        // - add the directory of the open file.
+        getenv@Runtime( "JOLIE_HOME" )( jHome )
+        getFileSeparator@File()( fs )
+        getParentPath@File( documentData.uri )( documentPath )
+        regexRequest = documentData.uri
+        regexRequest.regex =  "^(([^:/?#]+):)?(//([^/?#]*))?([^?#]*)(\\?([^#]*))?(#(.*))?"
+        find@StringUtils( regexRequest )( regexResponse ) 
+        inspectionReq << {
+          filename = regexResponse.group[5]
+          source = documentData.text
+          includePaths[0] = jHome + fs + "include"
+          includePaths[1] = documentPath
+        }
+        replacementRequest = regexResponse.group[5]
+        replacementRequest.regex = "%20"
+        replacementRequest.replacement = " "
+        replaceAll@StringUtils(replacementRequest)(inspectionReq.filename)
+
+        replacementRequest = inspectionReq.includePaths[1]
+        replaceAll@StringUtils(replacementRequest)(inspectionReq.includePaths[1])
+        inspectPorts@Inspector( inspectionReq )( inspectionResult.result )
+      }
+    }]
+
+    [sendDiagnostics( inspectionResult )] {
+      print@Console( "ciao" )(  )
+      if ( inspectionResult.saveProgram ) {
+        //doc.jolieProgram << inspectionResult.result
+        diagnosticParams << {
+          uri = inspectionResult.uri
+          diagnostics = void
+      }
+      publishDiagnostics@Client( diagnosticParams )
+  }
+
+    }
+  }
+}
 
 // TODO: refactor this definition to an internal service
 define inspect
@@ -162,6 +268,9 @@ main {
       inspect
 
       sendDiagnostics
+      if( inspectionResult.saveProgram ) {
+        doc.jolieProgram << inspectionResult.result
+      }
 
       doc << {
         uri = uri
@@ -208,6 +317,7 @@ main {
         inspect
 
         sendDiagnostics
+        // doc.jolie << inspectionResult
       }
   }
 
