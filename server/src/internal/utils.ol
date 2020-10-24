@@ -101,6 +101,7 @@ service InspectionUtils {
           }
           publishDiagnostics@Client( diagnosticParams )
           inspectionResult.saveProgram = false
+          inspectionResult.diagnostics << diagnosticParams
         )
 
         // TODO : fix these:
@@ -129,16 +130,17 @@ service InspectionUtils {
       }
     }]
 
-    [sendDiagnostics( inspectionResult )] {
+    [sendEmptyDiagnostics( uri )] {
       print@Console( "ciao" )(  )
-      if ( inspectionResult.saveProgram ) {
+      //if ( inspectionResult.saveProgram ) {
         //doc.jolieProgram << inspectionResult.result
         diagnosticParams << {
-          uri = inspectionResult.uri
+          //uri = inspectionResult.uri
+          uri = uri
           diagnostics = void
       }
       publishDiagnostics@Client( diagnosticParams )
-  }
+      //}
 
     }
   }
@@ -306,7 +308,9 @@ main {
         inspect
 
         sendDiagnostics
-
+        if( inspectionResult.saveProgram ) {
+          doc.jolieProgram << inspectionResult.result
+        }
         doc << {
           source = docText
           version = newVersion
@@ -317,6 +321,9 @@ main {
         inspect
 
         sendDiagnostics
+        if( inspectionResult.saveProgram ) {
+          doc.jolieProgram << inspectionResult.result
+        }
         // doc.jolie << inspectionResult
       }
   }
@@ -344,7 +351,7 @@ main {
       }
 
       if ( !found ) {
-        //TODO if found == false throw exception
+        //TODO: if found == false throw exception
         println@Console( "doc not found!!!" )()
       }
   } ]
