@@ -32,13 +32,15 @@ outputPort Client {
 interface InspectionUtilsIface {
   RequestResponse:
     inspect
+  OneWay:
+    sendEmptyDiagnostics
 }
 
 service InspectionUtils {
   Interfaces: InspectionUtilsIface
 
   main {
-    [inspect( documentData )( inspectionResult ) {
+    [ inspect( documentData )( inspectionResult ) {
       scope( inspection ) {
         inspectionResult.saveProgram = true
         install( default =>
@@ -298,15 +300,21 @@ main {
         doc.lines[#doc.lines] = line
       }
 
-      inspect
+      //inspect
+      inspect@InspectionUtils( {
+        uri = uri
+        text = docText
+      } )( inspectionResult )
 
-      sendDiagnostics
+      //sendDiagnostics
       if( inspectionResult.saveProgram ) {
+        sendEmptyDiagnostics@InspectionUtils( inspectionResult.uri )
         doc.jolieProgram << inspectionResult.result
       }
 
       doc << {
-        uri = uri
+        //uri = uri
+        uri = inspectionResult.uri //I saved the realaborated uri
         source = docText
         version = version
       }
@@ -336,10 +344,15 @@ main {
           doc.lines[#doc.lines] = line
         }
 
-        inspect
+        //inspect
+        inspect@InspectionUtils( {
+          uri = uri
+          text = docText
+        } )( inspectionResult )
 
-        sendDiagnostics
+        //sendDiagnostics
         if( inspectionResult.saveProgram ) {
+          sendEmptyDiagnostics@InspectionUtils( inspectionResult.uri )
           doc.jolieProgram << inspectionResult.result
         }
         doc << {
@@ -348,15 +361,16 @@ main {
         }
 
         docsSaved[indexDoc] << doc
-      } else {
-        inspect
+      }// else {
+        //inspect
 
-        sendDiagnostics
-        if( inspectionResult.saveProgram ) {
-          doc.jolieProgram << inspectionResult.result
-        }
+        //sendDiagnostics
+        //if( inspectionResult.saveProgram ) {
+        //  sendEmptyDiagnostics@InspectionUtils()
+        //  doc.jolieProgram << inspectionResult.result
+        //}
         // doc.jolie << inspectionResult
-      }
+      //}
   }
 
   [ deleteDocument( txtDocParams ) ] {
