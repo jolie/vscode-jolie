@@ -39,8 +39,13 @@ interface InspectionUtilsIface {
 service InspectionUtils {
   Interfaces: InspectionUtilsIface
 
+  init {
+    println@Console( "InspectionUtils Service started" )()
+  }
+
   main {
     [ inspect( documentData )( inspectionResult ) {
+      println@Console( "Inspecting..." )(  )
       scope( inspection ) {
         inspectionResult.saveProgram = true
         install( default =>
@@ -150,7 +155,7 @@ service InspectionUtils {
     }]
 
     [sendEmptyDiagnostics( uri )] {
-      print@Console( "ciao" )(  )
+      println@Console( "Sending empty diagnostics" )(  )
       //if ( inspectionResult.saveProgram ) {
         //doc.jolieProgram << inspectionResult.result
         diagnosticParams << {
