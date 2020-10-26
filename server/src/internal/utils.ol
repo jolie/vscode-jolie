@@ -64,18 +64,16 @@ service InspectionUtils {
           indexOf@StringUtils( matchRes.group[1] {
             word = "file:"
           } )( indexOfRes )
+          
           if ( indexOfRes > -1 ) {
-            //subStrReq = matchRes.group[1]
-            //subStrReq.begin = indexOfRes + 5
-
             substring@StringUtils( matchRes.group[1] {
               begin = indexOfRes + 5
             } )( documentUri ) //line
           } else {
-            replaceRequest = matchRes.group[1]
-            replaceRequest.regex = "\\\\";
-            replaceRequest.replacement = "/"
-            replaceAll@StringUtils( replaceRequest )( documentUri )
+            replaceAll@StringUtils( matchRes.group[1] {
+              regex = "\\\\"
+              replacement = "/"
+            } )( documentUri )
             // documentUri = "///" + fileName
           }
           
@@ -124,38 +122,36 @@ service InspectionUtils {
 	      regexRequest.regex =  "^(([^:/?#]+):)?(//([^/?#]*))?([^?#]*)(\\?([^#]*))?(#(.*))?"
         find@StringUtils( regexRequest)( regexResponse )
 
-        replacementRequest = regexResponse.group[5]
-        replacementRequest.regex = "%20"
-        replacementRequest.replacement = " "
-        replaceAll@StringUtils( replacementRequest )( inspectionReq.filename )
+        //Spaces in file URIs are encoded with %20 in some systems
+        replaceAll@StringUtils( regexResponse.group[5] {
+          regex = "%20" 
+          replacement = " "
+        } )( inspectionReq.filename )
 
         inspectionReq << {
-          //filename = regexResponse.group[5]
           source = documentData.text
           includePaths[0] = jHome + fs + "include"
-          includePaths[1] = documentPath
         }
 
-        replacementRequest = inspectionReq.includePaths[1]
-        replaceAll@StringUtils( replacementRequest )( inspectionReq.includePaths[1] )
+        //Spaces in file URIs are encoded with %20 in some systems
+        replaceAll@StringUtils( documentPath {
+          regex = "%20"
+          replacement = " "
+        } )( inspectionReq.includePaths[1] )
 
         inspectPorts@Inspector( inspectionReq )( inspectionResult.result )
       }
     }]
 
-    [sendEmptyDiagnostics( uri )] {
-      println@Console( "Sending empty diagnostics" )(  )
-      //if ( inspectionResult.saveProgram ) {
-        //doc.jolieProgram << inspectionResult.result
+    [ sendEmptyDiagnostics( uri ) ] {
+        println@Console( "Sending empty diagnostics" )(  )
         diagnosticParams << {
           //uri = inspectionResult.uri
           uri = uri
           diagnostics = void
+        }
+        publishDiagnostics@Client( diagnosticParams )
       }
-      publishDiagnostics@Client( diagnosticParams )
-      //}
-
-    }
   }
 }
 
@@ -174,7 +170,6 @@ main {
       for ( line in splitRes.result ) {
         doc.lines[#doc.lines] = line
       }
-
       //inspect
       inspect@InspectionUtils( {
         uri = uri
