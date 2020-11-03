@@ -847,5 +847,5 @@ type DocumentData {
 
 type InspectionResult {
   diagnostics?: undefined //diagnostic message
-  result: undefined //jolie program
+  result?: undefined //jolie program
 }
