@@ -839,3 +839,13 @@ type DocumentModifications {
   uri: string
   text: string
 }
+
+type DocumentData {
+  uri: string
+  text: string
+}
+
+type InspectionResult {
+  diagnostics?: undefined //diagnostic message
+  result: undefined //jolie program
+}

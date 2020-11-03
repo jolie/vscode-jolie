@@ -48,3 +48,10 @@ interface UtilsInterface {
     updateDocument( DocumentModifications ),
     deleteDocument( DidCloseTextDocumentParams )
 }
+
+interface InspectionUtilsIface {
+  RequestResponse:
+    inspect( DocumentData )( InspectionResult )
+  OneWay:
+    sendEmptyDiagnostics( DocumentUri )
+}

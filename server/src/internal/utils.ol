@@ -29,12 +29,7 @@ outputPort Client {
   Interfaces: ServerToClient
 }
 
-interface InspectionUtilsIface {
-  RequestResponse:
-    inspect
-  OneWay:
-    sendEmptyDiagnostics
-}
+
 
 service InspectionUtils {
 
@@ -48,7 +43,6 @@ service InspectionUtils {
     [ inspect( documentData )( inspectionResult ) {
       println@Console( "Inspecting..." )(  )
       scope( inspection ) {
-        inspectionResult.saveProgram = true
         install( default =>
           stderr = inspection.(inspection.default)
           stderr.regex =  "\\s*(.+):\\s*(\\d+):\\s*(error|warning)\\s*:\\s*(.+)"
@@ -108,7 +102,6 @@ service InspectionUtils {
             }
           }
           publishDiagnostics@Client( diagnosticParams )
-          inspectionResult.saveProgram = false
           inspectionResult.diagnostics << diagnosticParams
         )
 
@@ -146,7 +139,6 @@ service InspectionUtils {
     [ sendEmptyDiagnostics( uri ) ] {
         println@Console( "Sending empty diagnostics" )(  )
         diagnosticParams << {
-          //uri = inspectionResult.uri
           uri = uri
           diagnostics = void
         }
@@ -170,14 +162,14 @@ main {
       for ( line in splitRes.result ) {
         doc.lines[#doc.lines] = line
       }
-      //inspect
+      
       inspect@InspectionUtils( {
         uri = uri
         text = docText
       } )( inspectionResult )
 
-      //sendDiagnostics
-      if( inspectionResult.saveProgram ) {
+      // if there is no error in the code
+      if( !is_defined( inspectionResult.diagnostics ) ) {
         sendEmptyDiagnostics@InspectionUtils( uri )
         doc.jolieProgram << inspectionResult.result
       }
@@ -187,7 +179,7 @@ main {
         source = docText
         version = version
       }
-
+      
       // TODO: use a dictionary with URIs as keys instead of an array
       global.textDocument[#global.textDocument] << doc
   }
@@ -213,14 +205,13 @@ main {
           doc.lines[#doc.lines] = line
         }
 
-        //inspect
         inspect@InspectionUtils( {
           uri = uri
           text = docText
         } )( inspectionResult )
 
-        //sendDiagnostics
-        if( inspectionResult.saveProgram ) {
+        // if there is no error in the code
+        if( !is_defined( inspectionResult.diagnostics ) ) {
           sendEmptyDiagnostics@InspectionUtils( uri )
           doc.jolieProgram << inspectionResult.result
         }
@@ -228,7 +219,6 @@ main {
           source = docText
           version = newVersion
         }
-
         docsSaved[indexDoc] << doc
       }// else {
         //inspect
