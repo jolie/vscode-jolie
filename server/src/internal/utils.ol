@@ -113,7 +113,7 @@ service InspectionUtils {
         getParentPath@File( documentData.uri )( documentPath )
         regexRequest = documentData.uri
 	      regexRequest.regex =  "^(([^:/?#]+):)?(//([^/?#]*))?([^?#]*)(\\?([^#]*))?(#(.*))?"
-        find@StringUtils( regexRequest)( regexResponse )
+        find@StringUtils( regexRequest )( regexResponse )
 
         //Spaces in file URIs are encoded with %20 in some systems
         replaceAll@StringUtils( regexResponse.group[5] {
