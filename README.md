@@ -20,7 +20,7 @@ Requires the environment variable `JOLIE_HOME` to be set correctly.
 
 ## Requirements
 
-- [Jolie](https://jolie-lang.org) 1.8.1 or above.
+- [Jolie](https://jolie-lang.org) 1.10.1 or above.
 
 ## Extension Settings
 
@@ -40,6 +40,10 @@ None.
 
 
 ## Release Notes
+
+### 1.4.0
+
+- Refactored to use @jolie/languageserver from npm.
 
 ### 1.3.6
 

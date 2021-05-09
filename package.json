@@ -2,7 +2,7 @@
 	"name": "vscode-jolie",
 	"displayName": "Jolie Language Support",
 	"description": "Language support for the Jolie programming language (https://jolie-lang.org)",
-	"version": "1.3.6",
+	"version": "1.4.0",
 	"license": "MIT",
 	"icon": "images/icon.png",
 	"author": {
@@ -75,7 +75,7 @@
 				"jolie.languageServer.tcpPort": {
 					"type": "number",
 					"description": "The TCP port used by the Jolie Language Server",
-					"default": 9123
+					"default": 9743
 				}
 			}
 		}
@@ -92,17 +92,18 @@
 		"postinstall": "vscode-install"
 	},
 	"dependencies": {
-		"execa": "^2.0.3",
-		"semver": "^6.2.0",
-		"vscode-languageclient": "^5.2.1"
+		"@jolie/languageserver": "^0.2.0",
+		"execa": "^2.1.0",
+		"semver": "^6.3.0",
+		"vscode-languageclient": "5.x"
 	},
 	"devDependencies": {
-		"@types/execa": "^0.9.0",
-		"@types/mocha": "^5.2.0",
-		"@types/node": "^8.10.50",
-		"@types/semver": "^5.5.0",
-		"tslint": "^5.16.0",
-		"typescript": "^3.5.1",
-		"vscode": "^1.1.35"
+		"@types/execa": "0.9.x",
+		"@types/mocha": "5.x",
+		"@types/node": "8.x",
+		"@types/semver": "5.x",
+		"tslint": "5.x",
+		"typescript": "3.x",
+		"vscode": "1.x"
 	}
 }

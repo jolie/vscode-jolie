@@ -5,12 +5,13 @@ import * as cp from 'child_process'
 import { LanguageClient, LanguageClientOptions, StreamInfo } from 'vscode-languageclient'
 import * as semver from 'semver'
 import * as execa from 'execa'
+import * as vscode from 'vscode'
 
 let client: LanguageClient
 let proc: cp.ChildProcess
 let logger: OutputChannel
 
-const versionRequirement = ">=1.8.1"
+const versionRequirement = ">=1.10.1"
 const IsWindows = ( process.platform === "win32" )
 
 function getConfigValue( value: string ): any {
@@ -74,18 +75,20 @@ export async function activate(context: ExtensionContext) {
 	log( "Activating Jolie Language Server" )
 	
 	const serverOptions = () => new Promise<StreamInfo>( (resolve, reject) => {
-		const serverPath = context.asAbsolutePath(path.join('server', 'src'))
-		const command = IsWindows ? 'cmd.exe' : 'jolie'
-		const olFile = 'main.ol'
+		const serverPath = vscode.extensions.getExtension("jolie.vscode-jolie").extensionPath
+		const command = 'npx'
+		// const olFile = 'main.ol'
 	
-		const args =
-			IsWindows ?	['/K', 'jolie.bat', '-C', `Location_JolieLS=\"socket://localhost:${tcpPort}\"`, olFile]
-			: ['-C', `Location_JolieLS=\"socket://localhost:${tcpPort}\"`, olFile]
+		// const args =
+		// 	IsWindows ?	['/K', 'jolie.bat', '-C', `Location_JolieLS=\"socket://localhost:${tcpPort}\"`, olFile]
+		// 	: ['-C', `Location_JolieLS=\"socket://localhost:${tcpPort}\"`, olFile]
+		const args = ['joliels', `${tcpPort}`]
 		
 		// const args = ['-C', `Location_JolieLS=\"socket://localhost:${tcpPort}\"`, '-C', 'Debug=true', olFile]
 		// const args = ['-C', `Location_JolieLS=\"socket://localhost:${tcpPort}\"`, '--trace', olFile]
 		log(`starting "${command} ${args.join(' ')}"`)
-		proc = cp.spawn(command, args, { cwd: serverPath })
+		proc = cp.spawn(command, args)
+		// , { cwd: serverPath })
 
 		proc.stdout.on('data', (out) => {
 			const message = String(out)
