@@ -82,7 +82,7 @@ export async function activate(context: ExtensionContext) {
 		// const args =
 		// 	IsWindows ?	['/K', 'jolie.bat', '-C', `Location_JolieLS=\"socket://localhost:${tcpPort}\"`, olFile]
 		// 	: ['-C', `Location_JolieLS=\"socket://localhost:${tcpPort}\"`, olFile]
-		const args = ['--no-install', '--package', '@jolie/languageserver', 'joliels', `${tcpPort}`]
+		const args = ['--yes', '--package', '@jolie/languageserver', 'joliels', `${tcpPort}`]
 		
 		// const args = ['-C', `Location_JolieLS=\"socket://localhost:${tcpPort}\"`, '-C', 'Debug=true', olFile]
 		// const args = ['-C', `Location_JolieLS=\"socket://localhost:${tcpPort}\"`, '--trace', olFile]
