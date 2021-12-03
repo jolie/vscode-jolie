@@ -87,9 +87,7 @@
 	"scripts": {
 		"vscode:prepublish": "npm run update-vscode && npm run compile",
 		"compile": "tsc -b",
-		"watch": "tsc -b -w",
-		"update-vscode": "vscode-install",
-		"postinstall": "vscode-install"
+		"watch": "tsc -b -w"
 	},
 	"dependencies": {
 		"@jolie/languageserver": "^0.2.0",

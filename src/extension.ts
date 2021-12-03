@@ -84,7 +84,7 @@ export async function activate(context: ExtensionContext) {
 			args = ['/C', 'npx', '--yes', '--package', '@jolie/languageserver', 'joliels', `${tcpPort}`]
 		} else {
 			command = 'npx'
-			args = ['--yes', '--package', '@jolie/languageserver', 'joliels', `${tcpPort}`]
+			args = ['--package', '@jolie/languageserver', 'joliels', `${tcpPort}`]
 		}
 
 		log(`starting "${command} ${args.join(' ')}"`)
@@ -93,11 +93,7 @@ export async function activate(context: ExtensionContext) {
 		proc.on("error", (err)=>{
 			log(`error: ${String(err)}`)
 		})
-		
-		/*log("npx --yes --package @jolie/languageserver joliels "+`${tcpPort}`)
-		proc = cp.exec("npx --yes --package @jolie/languageserver joliels "+`${tcpPort}`, { 'encoding': 'utf8' }, (error, stdout) => {
-			console.log(`exec stdout: ${stdout} error: ${error}`);});
-*/
+
 		proc.stdout.on('data', (out) => {
 			const message = String(out)
 			if ( message.includes( "Jolie Language Server started" ) ) {
