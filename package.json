@@ -104,6 +104,7 @@
 		"@types/semver": "5.x",
 		"tslint": "5.x",
 		"typescript": "3.x",
-		"vscode": "1.x"
+		"@types/vscode": "1.x",
+		"vscode-test": "1.x"
 	}
 }

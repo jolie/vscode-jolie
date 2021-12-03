@@ -76,20 +76,28 @@ export async function activate(context: ExtensionContext) {
 	
 	const serverOptions = () => new Promise<StreamInfo>( (resolve, reject) => {
 		const serverPath = vscode.extensions.getExtension("jolie.vscode-jolie").extensionPath
-		const command = 'npx'
-		// const olFile = 'main.ol'
-	
-		// const args =
-		// 	IsWindows ?	['/K', 'jolie.bat', '-C', `Location_JolieLS=\"socket://localhost:${tcpPort}\"`, olFile]
-		// 	: ['-C', `Location_JolieLS=\"socket://localhost:${tcpPort}\"`, olFile]
-		const args = ['--yes', '--package', '@jolie/languageserver', 'joliels', `${tcpPort}`]
+		var command: string
+		var args: string[]
 		
-		// const args = ['-C', `Location_JolieLS=\"socket://localhost:${tcpPort}\"`, '-C', 'Debug=true', olFile]
-		// const args = ['-C', `Location_JolieLS=\"socket://localhost:${tcpPort}\"`, '--trace', olFile]
+		if(IsWindows){
+			command = 'cmd.exe'
+			args = ['/C', 'npx', '--yes', '--package', '@jolie/languageserver', 'joliels', `${tcpPort}`]
+		} else {
+			command = 'npx'
+			args = ['--yes', '--package', '@jolie/languageserver', 'joliels', `${tcpPort}`]
+		}
+
 		log(`starting "${command} ${args.join(' ')}"`)
 		proc = cp.spawn(command, args)
-		// , { cwd: serverPath })
 
+		proc.on("error", (err)=>{
+			log(`error: ${String(err)}`)
+		})
+		
+		/*log("npx --yes --package @jolie/languageserver joliels "+`${tcpPort}`)
+		proc = cp.exec("npx --yes --package @jolie/languageserver joliels "+`${tcpPort}`, { 'encoding': 'utf8' }, (error, stdout) => {
+			console.log(`exec stdout: ${stdout} error: ${error}`);});
+*/
 		proc.stdout.on('data', (out) => {
 			const message = String(out)
 			if ( message.includes( "Jolie Language Server started" ) ) {
