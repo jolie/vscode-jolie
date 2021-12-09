@@ -87,9 +87,7 @@
 	"scripts": {
 		"vscode:prepublish": "npm run update-vscode && npm run compile",
 		"compile": "tsc -b",
-		"watch": "tsc -b -w",
-		"update-vscode": "vscode-install",
-		"postinstall": "vscode-install"
+		"watch": "tsc -b -w"
 	},
 	"dependencies": {
 		"@jolie/languageserver": "^0.2.0",
@@ -104,6 +102,7 @@
 		"@types/semver": "5.x",
 		"tslint": "5.x",
 		"typescript": "3.x",
-		"vscode": "1.x"
+		"@types/vscode": "1.x",
+		"vscode-test": "1.x"
 	}
 }
