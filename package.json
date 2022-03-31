@@ -2,7 +2,7 @@
 	"name": "vscode-jolie",
 	"displayName": "Jolie Language Support",
 	"description": "Language support for the Jolie programming language (https://jolie-lang.org)",
-	"version": "1.4.3",
+	"version": "1.5.0",
 	"license": "MIT",
 	"icon": "images/icon.png",
 	"author": {
@@ -22,24 +22,6 @@
 		"Programming Languages"
 	],
 	"contributes": {
-		"commands":[
-			{
-				"command": "vscode-jolie.executeHoverProvider",
-				"title": "executeHoverProvider"
-			},
-			{
-				"command": "vscode-jolie.nameConvention",
-				"title": "nameConvention"
-			},
-			{
-				"command": "vscode-jolie.enableCodeLens",
-				"title": "enableCodeLens"
-			},
-			{
-				"command": "vscode-jolie.disableCodeLens",
-				"title": "disableCodeLens"
-			}
-		],
 		"taskDefinitions": [
 			{
 				"type": "run"
@@ -108,22 +90,18 @@
 		"watch": "tsc -b -w"
 	},
 	"dependencies": {
-		"jolie/languageserver1": "npm:jolie/languageserver@^0.2.0",
-		"jolie/languageserver2": "npm:jolie/languageserver@^0.3.0",
 		"execa": "^2.1.0",
 		"semver": "^6.3.0",
-		"vscode-languageclient": "5.x",
-		"vs":"0.1.0"
+		"vscode-languageclient": "5.x"
 	},
 	"devDependencies": {
 		"@types/execa": "0.9.x",
 		"@types/mocha": "5.x",
 		"@types/node": "8.x",
 		"@types/semver": "5.x",
+		"@types/vscode": "1.x",
 		"tslint": "5.x",
 		"typescript": "3.x",
-		"@types/vscode": "1.x",
-		"vscode-test": "1.x",
-		"vs":"0.1.0"
+		"vscode-test": "1.x"
 	}
 }
