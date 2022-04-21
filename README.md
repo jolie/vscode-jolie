@@ -41,6 +41,10 @@ None.
 
 ## Release Notes
 
+### 1.5.0
+
+- Support for the upcoming Jolie 1.11, with new error  messages, help messages, and refactoring.
+
 ### 1.4.0
 
 - Refactored to use @jolie/languageserver from npm.
