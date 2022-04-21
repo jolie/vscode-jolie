@@ -85,7 +85,7 @@
 		"onLanguage:jolie"
 	],
 	"scripts": {
-		"vscode:prepublish": "npm run update-vscode && npm run compile",
+		"vscode:prepublish": "npm run compile",
 		"compile": "tsc -b",
 		"watch": "tsc -b -w"
 	},
