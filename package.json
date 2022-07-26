@@ -2,7 +2,7 @@
 	"name": "vscode-jolie",
 	"displayName": "Jolie Language Support",
 	"description": "Language support for the Jolie programming language (https://jolie-lang.org)",
-	"version": "1.5.1",
+	"version": "1.5.2",
 	"license": "MIT",
 	"icon": "images/icon.png",
 	"author": {
