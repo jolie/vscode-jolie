@@ -2,7 +2,7 @@ import * as path from 'path'
 import * as net from 'net'
 import { window, workspace, ExtensionContext, Task, tasks, ShellExecution, OutputChannel, Uri} from 'vscode'
 import * as cp from 'child_process'
-import { LanguageClient, LanguageClientOptions, StreamInfo} from 'vscode-languageclient'
+import { CloseAction, ErrorAction, LanguageClient, LanguageClientOptions, StreamInfo} from 'vscode-languageclient'
 import * as semver from 'semver'
 import * as execa from 'execa'
 import * as vscode from 'vscode'
@@ -10,6 +10,7 @@ import * as vscode from 'vscode'
 let client: LanguageClient
 let proc: cp.ChildProcess
 let logger: OutputChannel
+let socket: net.Socket
 
 const versionRequirement = [[">=1.10.1", "^0.2.1"], [">=1.11.0", "^1.0.0"]]
 let languageServerVersion: String
@@ -107,7 +108,7 @@ export async function activate(context: ExtensionContext) {
 			const message = String(out)
 			if ( message.includes( "Jolie Language Server started" ) ) {
 				//if the jolie process has started, we connect the client to the socket and resolve the childProcess
-				const socket = net.createConnection( { port : tcpPort, host:'localhost' } )
+				socket = net.createConnection( { port : tcpPort, host:'localhost' } )
 				resolve({ reader: socket, writer: socket })
 			}
 			if(message.includes("Rename abandoned.")){
@@ -117,7 +118,7 @@ export async function activate(context: ExtensionContext) {
 		})
 		proc.stderr.on('data', (out) => {
 			let s = String( out )
-			if( s.includes( "service initialisation failed" ) ){
+			if( s.includes( "Service initialisation failed" ) ){
 				window.showErrorMessage( s )
 			}
 			if( s.includes( "Address already in use" ) ){
@@ -152,6 +153,17 @@ export async function activate(context: ExtensionContext) {
 			code2Protocol: uri =>
 				IsWindows ? uri.toString().replace('%3A', ':') : uri.toString(),
 			protocol2Code: str => Uri.parse(str),
+		},
+		errorHandler: {
+			closed() {
+				socket = net.createConnection( { port : tcpPort, host:'localhost' } )
+				return CloseAction.DoNotRestart
+			},
+
+			error(error, message, count) {
+				log( error.stack )
+				return ErrorAction.Continue
+			}
 		}
 	}
 
