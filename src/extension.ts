@@ -34,7 +34,7 @@ let socket: Socket;
 
 const versionRequirement = [
   [">=1.10.1", "^0.2.1"],
-  [">=1.11.0", "^1.0.0"],
+  [">=1.11.0", "^2.0.0"],
 ];
 let languageServerVersion: string;
 
@@ -159,7 +159,7 @@ export async function activate(_context: ExtensionContext) {
   const serverStreamInfo: ServerOptions = () => {
     return new Promise((resolve) => {
       if (isPortAvailable && process.env.LANGUAGE_SERVER !== "external") {
-        log("Start Jolie Language Server");
+        log("Start Jolie Language Server.");
         const server = createLSServer(tcpPort);
         server.start();
         server.on("ready", () => {
@@ -167,7 +167,9 @@ export async function activate(_context: ExtensionContext) {
           resolve({ reader: socket, writer: socket });
         });
       } else {
-        log("Connect to Jolie Language Server");
+        log(
+          `Start Jolie Language Server: port ${tcpPort}, is not available, try to connect to existing server.`
+        );
         socket.connect({ host: "localhost", port: tcpPort });
         resolve({ reader: socket, writer: socket });
       }
@@ -209,7 +211,7 @@ export async function activate(_context: ExtensionContext) {
     errorHandler: {
       closed(): CloseHandlerResult {
         return {
-          action: CloseAction.DoNotRestart,
+          action: CloseAction.Restart,
         };
       },
 
