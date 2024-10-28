@@ -95,6 +95,7 @@
   },
   "dependencies": {
     "@vscode/vsce": "3.1.0",
+    "lookpath": "^1.2.2",
     "semver": "^7.6",
     "vscode-languageclient": "8.2.0-next.0"
   },
