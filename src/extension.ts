@@ -25,6 +25,7 @@ import {
 import LanguageServerProcess, { ServerError } from "./ls_process";
 import { spawnSync } from "child_process";
 import { createServer, Socket } from "net";
+import { lookpath } from "lookpath";
 const isWindows = process.platform === "win32";
 
 let server: LanguageServerProcess;
@@ -49,6 +50,10 @@ function createRunTask(title: string): Task {
     new ShellExecution(`jolie "${file}"`, { cwd: dir }),
     []
   );
+}
+
+async function checkCommandsAvailable(command: string) {
+  return (await lookpath(command)) !== undefined;
 }
 
 async function checkRequiredJolieVersion(): Promise<void> {
@@ -144,10 +149,18 @@ function createLSServer(tcpPort: number) {
 }
 
 export async function activate(_context: ExtensionContext) {
+  logger = window.createOutputChannel("Jolie LSP Client");
+  for (const command of ["npx", "jolie"]) {
+    if (!(await checkCommandsAvailable(command))) {
+      const message = `Command "${command}" not found in path variable. Please install before using this extension.`;
+      log(message);
+      window.showErrorMessage(message);
+      return;
+    }
+  }
   await checkRequiredJolieVersion();
   registerTasks();
 
-  logger = window.createOutputChannel("Jolie LSP Client");
   const tcpPort: number = <number>(
     workspace.getConfiguration().get("jolie.languageServer.tcpPort")
   );
