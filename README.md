@@ -32,14 +32,22 @@ Requires the environment variable `JOLIE_HOME` to be set correctly.
 None.
 
 ## Supported Operating Systems
-|            | Syntax Highlighting | Completion          | Hover               | Run Task            | 
-|------------|---------------------|---------------------|---------------------|---------------------|
-| Linux      |☑										 |☑										 |☑										 |	☑									 |
-| MacOS      |☑										 |☑										 |☑										 |	☑									 |
-| Windows    |☑										 |☑										 |☑										 |	☑									 |
 
+|            | Syntax Highlighting | Completion          | Hover               | Run Task            |
+|------------|---------------------|---------------------|---------------------|---------------------|
+| Linux      |☑           |☑           |☑           | ☑          |
+| MacOS      |☑           |☑           |☑           | ☑          |
+| Windows    |☑           |☑           |☑           | ☑          |
 
 ## Release Notes
+
+### 2.0.2
+
+- Fix issues on windows
+
+### 2.0.0
+
+- Update language server version to 2.0.0, which updates protocol of LSP to 3.18.
 
 ### 1.5.0
 
