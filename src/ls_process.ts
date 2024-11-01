@@ -1,4 +1,4 @@
-import { ChildProcessWithoutNullStreams, spawn } from "child_process";
+import { ChildProcessWithoutNullStreams, spawn, spawnSync } from "child_process";
 import { EventEmitter } from "node:events";
 import { OutputChannel, window } from "vscode";
 
@@ -14,7 +14,7 @@ export default class LanguageServerProcess extends EventEmitter {
   port: number;
   logger: OutputChannel;
   proc: ChildProcessWithoutNullStreams | undefined;
-
+  isWindows: boolean;
   public constructor(
     languageServerVersion: string,
     port: number,
@@ -29,6 +29,7 @@ export default class LanguageServerProcess extends EventEmitter {
         this.args = [
           "/C",
           "npx",
+          "--yes",
           "--package=@jolie/languageserver@" + languageServerVersion,
           "joliels",
           `${port}`,
@@ -36,6 +37,7 @@ export default class LanguageServerProcess extends EventEmitter {
       } else {
         this.command = "npx";
         this.args = [
+          "--yes",
           "--package=@jolie/languageserver@" + languageServerVersion,
           "joliels",
           `${port}`,
@@ -53,12 +55,13 @@ export default class LanguageServerProcess extends EventEmitter {
     }
     logger.appendLine(
       "Start LS Process with command " +
-        this.command +
-        " " +
-        this.args.join(" ")
+      this.command +
+      " " +
+      this.args.join(" ")
     );
     this.logger = logger;
     this.port = port;
+    this.isWindows = isWindows;
   }
 
   onReceiveFromJolie = (message: string): void => {
@@ -133,7 +136,12 @@ export default class LanguageServerProcess extends EventEmitter {
       this.proc.stdin.destroy();
       this.proc.stdout.destroy();
       this.proc.stderr.destroy();
-      this.proc.kill("SIGINT");
+      if (this.isWindows) { // Windows doesn't terminate child process properly https://stackoverflow.com/questions/32705857/cant-kill-child-process-on-windows
+        spawnSync("taskkill", ["/pid", this.proc.pid!.toString(), '/f', '/t']);
+      } else {
+        this.proc.kill("SIGINT");
+
+      }
     }
   };
 }
