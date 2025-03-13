@@ -47,7 +47,7 @@ export default class LanguageServerProcess extends EventEmitter {
       // languageServer is a path to launcher
       if (isWindows) {
         this.command = "cmd.exe";
-        this.args = ["/C", "jolie", languageServer, `${port}`];
+        this.args = ["/C", "jolie", "--trace", languageServer, `${port}`];
       } else {
         this.command = "jolie";
         this.args = ["--trace", languageServer, `${port}`];
