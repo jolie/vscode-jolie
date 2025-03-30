@@ -21,6 +21,7 @@ Requires the environment variable `JOLIE_HOME` to be set correctly.
 ## Requirements
 
 - [Jolie](https://jolie-lang.org) 1.10.1 or above.
+- [npm (Node.js Package Manager)](https://www.npmjs.com/) for providing npx
 
 ## Extension Settings
 
