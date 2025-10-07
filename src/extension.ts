@@ -36,7 +36,7 @@ let socket: Socket;
 const versionRequirement = [
   [">=1.10.1 <1.11.0", "~0.2.1"],
   [">=1.11.0 <1.13.3", "~2.0.0"],
-  [">=1.13.3", "~3.0.0"],
+  [">=1.13.3", "~3.0.1"],
 ];
 let languageServerVersion: string;
 
