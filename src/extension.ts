@@ -34,8 +34,9 @@ let logger: OutputChannel;
 let socket: Socket;
 
 const versionRequirement = [
-  [">=1.10.1", "~0.2.1"],
-  [">=1.11.0", "~2.0.0"],
+  [">=1.10.1 <1.11.0", "~0.2.1"],
+  [">=1.11.0 <1.13.3", "~2.0.0"],
+  [">=1.13.3", "~3.0.0"],
 ];
 let languageServerVersion: string;
 
@@ -172,9 +173,9 @@ export async function activate(_context: ExtensionContext) {
     if (
       workspace.getConfiguration().get("jolie.languageServer.showDebugMessages")
     ) {
-      log("receive data from Jolie: " + data)
+      log("receive data from Jolie: " + data);
     }
-  })
+  });
 
   const serverStreamInfo: ServerOptions = () => {
     return new Promise((resolve) => {
