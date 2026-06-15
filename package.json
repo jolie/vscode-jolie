@@ -94,7 +94,7 @@
     "watch": "tsc -b -w"
   },
   "dependencies": {
-    "@vscode/vsce": "^3.1.0",
+    "@vscode/vsce": "3.1.0",
     "lookpath": "^1.2.2",
     "semver": "^7.6",
     "vscode-languageclient": "8.2.0-next.0"
@@ -105,6 +105,7 @@
     "@types/node": "^20.16.5",
     "@types/semver": "7.5.x",
     "@types/vscode": "1.x",
+    "brace-expansion": "^5.0.6",
     "braces": "^3.0.4",
     "eslint": "^9.10.0",
     "globals": "^15.9.0",
