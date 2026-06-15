@@ -42,6 +42,10 @@ None.
 
 ## Release Notes
 
+### 2.0.3 - 2.0.5
+
+- Various security fixes
+
 ### 2.0.2
 
 - Fix issues on windows
