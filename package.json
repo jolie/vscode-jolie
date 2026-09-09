@@ -2,7 +2,7 @@
   "name": "vscode-jolie",
   "displayName": "Jolie Language Support",
   "description": "Language support for the Jolie programming language (https://jolie-lang.org)",
-  "version": "2.0.5",
+  "version": "2.0.6",
   "license": "MIT",
   "icon": "images/icon.png",
   "author": {
@@ -110,5 +110,9 @@
     "globals": "^15.9.0",
     "typescript": "^5.6",
     "typescript-eslint": "^8.5.0"
+  },
+  "allowScripts": {
+    "@vscode/vsce-sign@2.0.9": true,
+    "keytar@7.9.0": true
   }
 }
