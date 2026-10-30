@@ -42,7 +42,7 @@ None.
 
 ## Release Notes
 
-### 2.0.3 - 2.0.6
+### 2.0.3 - 2.0.7
 
 - Various security fixes
 
